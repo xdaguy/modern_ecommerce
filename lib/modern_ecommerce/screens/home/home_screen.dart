@@ -4,6 +4,7 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/product_card.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/category_card.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/categories/category_detail_screen.dart';
 
 /// Home Screen of the Modern Ecommerce UI Kit
 /// This is the main screen that users see when they open the app
@@ -82,13 +83,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(
-                  color: MEColors.primary.withOpacity(0.3),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
             ),
           ),
           
@@ -237,7 +231,19 @@ class HomeScreen extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: dummyCategories.length,
             itemBuilder: (context, index) {
-              return CategoryCard(category: dummyCategories[index]);
+              return CategoryCard(
+                category: dummyCategories[index],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryDetailScreen(
+                        category: dummyCategories[index],
+                      ),
+                    ),
+                  );
+                },
+              );
             },
           ),
         ),
