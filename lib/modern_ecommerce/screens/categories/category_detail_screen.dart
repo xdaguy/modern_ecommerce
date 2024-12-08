@@ -5,6 +5,7 @@ import 'package:modern_ecommerce/modern_ecommerce/models/product.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/product_grid_card.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/product/product_detail_screen.dart';
 
 class CategoryDetailScreen extends StatelessWidget {
   final Category category;
@@ -148,7 +149,14 @@ class CategoryDetailScreen extends StatelessWidget {
             return ProductGridCard(
               product: products[index],
               onTap: () {
-                // Navigate to product detail screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailScreen(
+                      product: products[index],
+                    ),
+                  ),
+                );
               },
             );
           },

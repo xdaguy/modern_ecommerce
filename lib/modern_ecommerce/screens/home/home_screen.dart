@@ -5,62 +5,184 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/product_card.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/category_card.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/categories/category_detail_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/common/custom_scroll_behavior.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/common/search_app_bar.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/common/shimmer_loading.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/product/product_detail_screen.dart';
 
 /// Home Screen of the Modern Ecommerce UI Kit
 /// This is the main screen that users see when they open the app
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isLoading = true;
+  bool _hasError = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _hasError = false;
+      });
+
+      // Simulate network delay
+      await Future.delayed(const Duration(seconds: 2));
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _hasError = true;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_hasError) {
+      return _buildErrorState();
+    }
+
     return Scaffold(
       backgroundColor: MEColors.background,
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: const SearchAppBar(),
+      body: ScrollConfiguration(
+        behavior: CustomScrollBehavior(),
+        child: RefreshIndicator(
+          color: MEColors.primary,
+          onRefresh: _loadData,
+          child: _isLoading ? _buildLoadingState() : _buildContent(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorState() {
+    return Scaffold(
+      backgroundColor: MEColors.background,
+      appBar: const SearchAppBar(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Icon(
+              Icons.error_outline,
+              size: 48,
+              color: MEColors.error,
+            ),
+            const SizedBox(height: 16),
             Text(
-              'Welcome back!',
-              style: METextStyles.bodyMedium.copyWith(
-                color: MEColors.textSecondary,
+              'Oops! Something went wrong',
+              style: METextStyles.bodyLarge.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Modern Ecommerce',
-              style: METextStyles.h2,
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: _loadData,
+              child: const Text('Try Again'),
             ),
           ],
         ),
-        backgroundColor: MEColors.cardBackground,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search, color: MEColors.textPrimary),
-            onPressed: () {},
+      ),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Shimmer for banner
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ShimmerLoading(
+              width: double.infinity,
+              height: 180,
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: MEColors.textPrimary),
-            onPressed: () {},
+          
+          // Shimmer for categories
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ShimmerLoading(
+              width: 120,
+              height: 24,
+            ),
+          ),
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 4,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: ShimmerLoading(
+                    width: 80,
+                    height: 100,
+                  ),
+                );
+              },
+            ),
+          ),
+          
+          // Shimmer for featured products
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: ShimmerLoading(
+              width: 160,
+              height: 24,
+            ),
+          ),
+          SizedBox(
+            height: 240,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 3,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: ShimmerLoading(
+                    width: 200,
+                    height: 280,
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Special Offer Banner
-            _buildSpecialOfferBanner(),
-            
-            // Categories Section
-            _buildCategoriesSection(),
-            
-            // Featured Products Section
-            _buildFeaturedProductsSection(),
-            
-            // New Arrivals Section
-            _buildNewArrivalsSection(),
-          ],
-        ),
+    );
+  }
+
+  Widget _buildContent() {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSpecialOfferBanner(),
+          _buildCategoriesSection(),
+          _buildFeaturedProductsSection(),
+          _buildNewArrivalsSection(),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }
@@ -255,27 +377,56 @@ class HomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Header
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Featured Products', style: METextStyles.h2),
+              const Text(
+                'Featured Products',
+                style: METextStyles.h2,
+              ),
               TextButton(
                 onPressed: () {},
-                child: const Text('See All'),
+                style: TextButton.styleFrom(
+                  foregroundColor: MEColors.primary,
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('See All'),
+                    SizedBox(width: 4),
+                    Icon(Icons.arrow_forward_ios, size: 12),
+                  ],
+                ),
               ),
             ],
           ),
         ),
+
+        // Products List
         SizedBox(
-          height: 280,
+          height: 240,
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
             itemCount: dummyProducts.length,
             itemBuilder: (context, index) {
-              return ProductCard(product: dummyProducts[index]);
+              return ProductCard(
+                product: dummyProducts[index],
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetailScreen(
+                        product: dummyProducts[index],
+                      ),
+                    ),
+                  );
+                },
+              );
             },
           ),
         ),
@@ -302,6 +453,16 @@ class HomeScreen extends StatelessWidget {
               child: ProductCard(
                 product: dummyProducts[index],
                 isHorizontal: true,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetailScreen(
+                        product: dummyProducts[index],
+                      ),
+                    ),
+                  );
+                },
               ),
             );
           },
