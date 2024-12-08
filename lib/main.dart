@@ -7,6 +7,11 @@ import 'package:provider/provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/cart_provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/navigation_provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/address/add_address_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/payment/add_payment_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/profile/orders/my_orders_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/profile/orders/order_details_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/profile/orders/order_tracking_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -96,6 +101,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: const MainLayout(),
+        routes: {
+          '/add-address': (context) => const AddAddressScreen(),
+          '/add-payment': (context) => const AddPaymentScreen(),
+          '/my-orders': (context) => const MyOrdersScreen(),
+        },
       ),
     );
   }

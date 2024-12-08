@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/base_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/payment/add_payment_screen.dart';
 
 class PaymentMethodsScreen extends StatelessWidget {
   const PaymentMethodsScreen({super.key});
@@ -11,13 +12,21 @@ class PaymentMethodsScreen extends StatelessWidget {
     return BaseScreen(
       title: 'Payment Methods',
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddPaymentScreen(),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           _buildPaymentCard(
+            context,
             isDefault: true,
             cardType: 'Visa',
             lastFourDigits: '4242',
@@ -25,6 +34,7 @@ class PaymentMethodsScreen extends StatelessWidget {
             cardHolderName: 'John Doe',
           ),
           _buildPaymentCard(
+            context,
             isDefault: false,
             cardType: 'Mastercard',
             lastFourDigits: '8888',
@@ -36,7 +46,7 @@ class PaymentMethodsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentCard({
+  Widget _buildPaymentCard(BuildContext context, {
     required bool isDefault,
     required String cardType,
     required String lastFourDigits,
@@ -110,14 +120,50 @@ class PaymentMethodsScreen extends StatelessWidget {
                 if (!isDefault)
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Set as default payment method'),
+                          ),
+                        );
+                      },
                       child: const Text('Set as Default'),
                     ),
                   ),
                 if (!isDefault) const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Remove Payment Method'),
+                          content: Text(
+                            'Are you sure you want to remove $cardType ending in $lastFourDigits?'
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Cancel'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Payment method removed'),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: MEColors.error,
+                              ),
+                              child: const Text('Remove'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: MEColors.error,
                     ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
-import 'package:modern_ecommerce/modern_ecommerce/screens/profile/orders/orders_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/profile/orders/my_orders_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/profile/orders/order_details_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/profile/orders/order_tracking_screen.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/profile/wishlist/wishlist_screen.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/profile/address/shipping_address_screen.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/profile/payment/payment_methods_screen.dart';
@@ -228,7 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const OrdersScreen(),
+                builder: (context) => const MyOrdersScreen(),
               ),
             );
           },

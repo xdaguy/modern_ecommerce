@@ -3,6 +3,8 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:provider/provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/cart_provider.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/address/add_address_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/payment/add_payment_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -175,7 +177,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         const SizedBox(height: 16),
         OutlinedButton.icon(
           onPressed: () {
-            // Show add address form
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AddAddressScreen(),
+              ),
+            );
           },
           icon: const Icon(Icons.add),
           label: const Text('Add New Address'),
@@ -356,7 +363,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           const SizedBox(height: 16),
           OutlinedButton.icon(
             onPressed: () {
-              // Show add payment method form
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AddPaymentScreen(),
+                ),
+              );
             },
             icon: const Icon(Icons.add),
             label: const Text('Add New Payment Method'),

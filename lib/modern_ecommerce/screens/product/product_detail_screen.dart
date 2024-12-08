@@ -4,6 +4,8 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:provider/provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/product/write_review_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/chat/product_inquiry_screen.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -296,6 +298,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               return _buildReviewItem();
             },
           ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WriteReviewScreen(
+                    product: widget.product,
+                  ),
+                ),
+              );
+            },
+            child: const Text('Write a Review'),
+          ),
         ],
       ),
     );
@@ -382,9 +397,35 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 border: Border.all(color: MEColors.border),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
-                Icons.chat_outlined,
-                color: MEColors.primary,
+              child: InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => DraggableScrollableSheet(
+                      initialChildSize: 0.9,
+                      minChildSize: 0.5,
+                      maxChildSize: 0.95,
+                      builder: (context, scrollController) => Container(
+                        decoration: const BoxDecoration(
+                          color: MEColors.background,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        child: ProductInquiryScreen(
+                          product: widget.product,
+                          scrollController: scrollController,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.chat_outlined,
+                  color: MEColors.primary,
+                ),
               ),
             ),
             const SizedBox(width: 16),

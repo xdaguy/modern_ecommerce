@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/base_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/address/add_address_screen.dart';
 
 class ShippingAddressScreen extends StatelessWidget {
   const ShippingAddressScreen({super.key});
@@ -11,7 +12,14 @@ class ShippingAddressScreen extends StatelessWidget {
     return BaseScreen(
       title: 'Shipping Addresses',
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddAddressScreen(),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
       body: ListView.builder(
