@@ -6,6 +6,8 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/product_grid_card.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/product/product_detail_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
+import 'package:provider/provider.dart';
 
 class CategoryDetailScreen extends StatelessWidget {
   final Category category;
@@ -148,6 +150,20 @@ class CategoryDetailScreen extends StatelessWidget {
           (context, index) {
             return ProductGridCard(
               product: products[index],
+              isInWishlist: context.watch<WishlistProvider>().isInWishlist(products[index].id),
+              onFavoritePressed: () {
+                context.read<WishlistProvider>().toggleWishlist(products[index]);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      context.read<WishlistProvider>().isInWishlist(products[index].id)
+                          ? 'Added to wishlist'
+                          : 'Removed from wishlist',
+                    ),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+              },
               onTap: () {
                 Navigator.push(
                   context,

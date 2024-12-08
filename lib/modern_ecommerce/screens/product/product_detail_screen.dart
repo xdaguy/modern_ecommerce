@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/models/product.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
+import 'package:provider/provider.dart';
+import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -101,9 +103,29 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           icon: const Icon(Icons.share_outlined),
           onPressed: () {},
         ),
-        IconButton(
-          icon: const Icon(Icons.favorite_border),
-          onPressed: () {},
+        Consumer<WishlistProvider>(
+          builder: (context, wishlist, child) {
+            final isInWishlist = wishlist.isInWishlist(widget.product.id);
+            return IconButton(
+              icon: Icon(
+                isInWishlist ? Icons.favorite : Icons.favorite_border,
+                color: isInWishlist ? MEColors.error : null,
+              ),
+              onPressed: () {
+                wishlist.toggleWishlist(widget.product);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      isInWishlist
+                          ? 'Removed from wishlist'
+                          : 'Added to wishlist',
+                    ),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ],
     );

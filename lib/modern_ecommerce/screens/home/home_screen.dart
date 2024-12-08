@@ -9,6 +9,8 @@ import 'package:modern_ecommerce/modern_ecommerce/widgets/common/custom_scroll_b
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/search_app_bar.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/shimmer_loading.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/product/product_detail_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
+import 'package:provider/provider.dart';
 
 /// Home Screen of the Modern Ecommerce UI Kit
 /// This is the main screen that users see when they open the app
@@ -416,6 +418,21 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               return ProductCard(
                 product: dummyProducts[index],
+                isInWishlist: context.watch<WishlistProvider>().isInWishlist(dummyProducts[index].id),
+                onFavoritePressed: () {
+                  context.read<WishlistProvider>().toggleWishlist(dummyProducts[index]);
+                  // Optional: Show feedback
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        context.read<WishlistProvider>().isInWishlist(dummyProducts[index].id)
+                            ? 'Added to wishlist'
+                            : 'Removed from wishlist',
+                      ),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
+                },
                 onTap: () {
                   Navigator.push(
                     context,
@@ -452,7 +469,21 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(bottom: 16),
               child: ProductCard(
                 product: dummyProducts[index],
-                isHorizontal: true,
+                isInWishlist: context.watch<WishlistProvider>().isInWishlist(dummyProducts[index].id),
+                onFavoritePressed: () {
+                  context.read<WishlistProvider>().toggleWishlist(dummyProducts[index]);
+                  // Optional: Show feedback
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        context.read<WishlistProvider>().isInWishlist(dummyProducts[index].id)
+                            ? 'Added to wishlist'
+                            : 'Removed from wishlist',
+                      ),
+                      duration: const Duration(seconds: 1),
+                    ),
+                  );
+                },
                 onTap: () {
                   Navigator.push(
                     context,

@@ -6,11 +6,15 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 class ProductGridCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;
+  final bool isInWishlist;
+  final VoidCallback? onFavoritePressed;
 
   const ProductGridCard({
     super.key,
     required this.product,
     this.onTap,
+    this.isInWishlist = false,
+    this.onFavoritePressed,
   });
 
   @override
@@ -47,16 +51,26 @@ class ProductGridCard extends StatelessWidget {
                     Positioned(
                       top: 8,
                       right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: MEColors.cardBackground,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.favorite_border,
-                          size: 20,
-                          color: MEColors.textSecondary,
+                      child: GestureDetector(
+                        onTap: onFavoritePressed,
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            isInWishlist ? Icons.favorite : Icons.favorite_border,
+                            size: 20,
+                            color: isInWishlist ? MEColors.error : MEColors.textSecondary,
+                          ),
                         ),
                       ),
                     ),

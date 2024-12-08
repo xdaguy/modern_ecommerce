@@ -6,6 +6,7 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:provider/provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/cart_provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/navigation_provider.dart';
+import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
+        ChangeNotifierProvider(create: (_) => WishlistProvider()),
       ],
       child: MaterialApp(
         title: 'Modern Ecommerce UI Kit',
