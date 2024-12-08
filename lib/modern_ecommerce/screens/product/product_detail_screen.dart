@@ -6,6 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/product/write_review_screen.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/chat/product_inquiry_screen.dart';
+import 'package:share_plus/share_plus.dart';
+import 'dart:io';
+import 'dart:async';  // For TimeoutException
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:cross_file/cross_file.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Product product;
@@ -103,7 +109,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       actions: [
         IconButton(
           icon: const Icon(Icons.share_outlined),
-          onPressed: () {},
+          onPressed: () => _showShareOptions(context),
         ),
         Consumer<WishlistProvider>(
           builder: (context, wishlist, child) {
@@ -442,5 +448,203 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         ),
       ),
     );
+  }
+
+  void _showShareOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: MEColors.cardBackground,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Handle bar
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              
+              // Title
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Text(
+                      'Share Product',
+                      style: METextStyles.h3,
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const Divider(height: 1),
+
+              // Share options
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: MEColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.text_snippet_outlined,
+                    color: MEColors.primary,
+                  ),
+                ),
+                title: const Text('Share Text Only'),
+                subtitle: const Text('Share product details as text'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _shareProduct(context);
+                },
+              ),
+              
+              ListTile(
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: MEColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.image_outlined,
+                    color: MEColors.primary,
+                  ),
+                ),
+                title: const Text('Share with Image'),
+                subtitle: const Text('Share product details with image'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _shareProductWithImage(context);
+                },
+              ),
+              
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _shareProductWithImage(BuildContext context) async {
+    final product = widget.product;
+    
+    try {
+      // Show loading indicator
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Preparing to share...'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+
+      // Create share text
+      final shareText = '''
+Check out this amazing product!
+
+${product.name}
+Price: \$${product.price.toStringAsFixed(2)}
+
+${product.description}
+
+Get it now on FlutterFusion!
+''';
+
+      // Download image
+      final response = await http.get(Uri.parse(product.imageUrl));
+      if (response.statusCode != 200) {
+        throw Exception('Failed to download image');
+      }
+
+      // Save to temp file
+      final temp = await getTemporaryDirectory();
+      final imagePath = '${temp.path}/share_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final file = File(imagePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      // Share
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: shareText,
+      );
+
+      // Cleanup
+      if (await file.exists()) {
+        await file.delete();
+      }
+
+    } catch (e) {
+      print('Share error: $e');
+      if (!context.mounted) return;
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Could not share with image'),
+          backgroundColor: MEColors.error,
+          duration: const Duration(seconds: 2),
+          action: SnackBarAction(
+            label: 'Try Text Only',
+            textColor: Colors.white,
+            onPressed: () => _shareProduct(context),
+          ),
+        ),
+      );
+    }
+  }
+
+  void _shareProduct(BuildContext context) {
+    final product = widget.product;
+    
+    // Create share text
+    final shareText = '''
+Check out this amazing product!
+
+${product.name}
+Price: \$${product.price.toStringAsFixed(2)}
+
+${product.description}
+
+Get it now on FlutterFusion!
+''';
+
+    // Show share dialog
+    Share.share(
+      shareText,
+      subject: product.name,
+    ).then((_) {
+      // Optional: Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Thanks for sharing!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not share the product'),
+          backgroundColor: MEColors.error,
+        ),
+      );
+    });
   }
 } 
