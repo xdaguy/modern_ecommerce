@@ -101,7 +101,7 @@ class HelpSupportScreen extends StatelessWidget {
               _buildContactItem(
                 icon: Icons.email_outlined,
                 title: 'Email Support',
-                subtitle: 'support@moderncommerce.com',
+                subtitle: 'support@flutterfusion.dev',
                 onTap: () {},
               ),
               const Divider(height: 1),
