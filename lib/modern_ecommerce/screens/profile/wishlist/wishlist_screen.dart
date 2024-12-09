@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/navigation_provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/product/product_detail_screen.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/common/network_image.dart';
 
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
@@ -104,8 +105,8 @@ class WishlistScreen extends StatelessWidget {
                                     ),
                                     child: AspectRatio(
                                       aspectRatio: 1,
-                                      child: Image.network(
-                                        product.imageUrl,
+                                      child: MENetworkImage(
+                                        imageUrl: product.imageUrl,
                                         fit: BoxFit.cover,
                                       ),
                                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/models/banner.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/common/banner_image.dart';
 
 class BannerSlider extends StatefulWidget {
   final List<PromoBanner> banners;
@@ -75,87 +76,67 @@ class _BannerSliderState extends State<BannerSlider> {
               final banner = widget.banners[index];
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      // Banner Image
-                      Image.network(
-                        banner.imageUrl,
-                        fit: BoxFit.cover,
+                      MEBannerImage(
+                        imageUrl: banner.imageUrl,
                         width: double.infinity,
-                        height: double.infinity,
-                      ),
-                      // Gradient Overlay
-                      Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black.withOpacity(0.7),
+                        height: widget.height,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                banner.title,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                banner.subtitle,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              if (banner.actionText != null) ...[
+                                const SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (banner.actionRoute != null) {
+                                      Navigator.pushNamed(
+                                        context,
+                                        banner.actionRoute!,
+                                        arguments: banner.actionParams,
+                                      );
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: MEColors.primary,
+                                    elevation: 0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24,
+                                      vertical: 12,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: Text(banner.actionText!),
+                                ),
+                              ],
                             ],
                           ),
-                        ),
-                      ),
-                      // Content
-                      Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              banner.title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              banner.subtitle,
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 16,
-                              ),
-                            ),
-                            if (banner.actionText != null) ...[
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (banner.actionRoute != null) {
-                                    Navigator.pushNamed(
-                                      context,
-                                      banner.actionRoute!,
-                                      arguments: banner.actionParams,
-                                    );
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: MEColors.primary,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                    vertical: 12,
-                                  ),
-                                ),
-                                child: Text(banner.actionText!),
-                              ),
-                            ],
-                          ],
                         ),
                       ),
                     ],

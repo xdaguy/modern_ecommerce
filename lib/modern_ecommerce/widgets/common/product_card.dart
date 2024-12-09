@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/models/product.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/common/network_image.dart';
 
 /// Reusable product card widget.
 /// Used to display product information in various layouts.
@@ -53,57 +54,60 @@ class ProductCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                  child: Image.network(
-                    product.imageUrl,
-                    height: 130,
+                  child: MENetworkImage(
+                    imageUrl: product.imageUrl,
                     width: double.infinity,
+                    height: 120,
                     fit: BoxFit.cover,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        product.name,
-                        style: METextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '\$${product.price.toStringAsFixed(2)}',
-                        style: METextStyles.bodyLarge.copyWith(
-                          color: MEColors.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            size: 14,
-                            color: Colors.amber,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          product.name,
+                          style: METextStyles.bodyMedium.copyWith(
+                            fontWeight: FontWeight.w600,
                           ),
-                          const SizedBox(width: 2),
-                          Text(
-                            product.rating.toString(),
-                            style: METextStyles.bodySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '\$${product.price.toStringAsFixed(2)}',
+                          style: METextStyles.bodyLarge.copyWith(
+                            color: MEColors.primary,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(width: 2),
-                          Text(
-                            '(${product.reviews})',
-                            style: METextStyles.bodySmall.copyWith(
-                              color: MEColors.textSecondary,
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              size: 14,
+                              color: Colors.amber,
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 2),
+                            Text(
+                              product.rating.toString(),
+                              style: METextStyles.bodySmall,
+                            ),
+                            const SizedBox(width: 2),
+                            Text(
+                              '(${product.reviews})',
+                              style: METextStyles.bodySmall.copyWith(
+                                color: MEColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -163,10 +167,10 @@ class ProductCard extends StatelessWidget {
               width: 120,
               child: ClipRRect(
                 borderRadius: const BorderRadius.horizontal(left: Radius.circular(16)),
-                child: Image.network(
-                  product.imageUrl,
-                  height: 120,
+                child: MENetworkImage(
+                  imageUrl: product.imageUrl,
                   width: 120,
+                  height: 120,
                   fit: BoxFit.cover,
                 ),
               ),

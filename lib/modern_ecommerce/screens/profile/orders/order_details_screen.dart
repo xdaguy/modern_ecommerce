@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/common/network_image.dart';
 import 'package:share_plus/share_plus.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
@@ -17,205 +18,52 @@ class OrderDetailsScreen extends StatelessWidget {
       backgroundColor: MEColors.background,
       appBar: AppBar(
         title: Text('Order #$orderId'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share_outlined),
-            onPressed: () {
-              Share.share('Check out my order #$orderId from FlutterFusion');
-            },
-          ),
-          PopupMenuButton(
-            icon: const Icon(Icons.more_vert),
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'download',
-                child: Row(
-                  children: [
-                    Icon(Icons.download_outlined),
-                    SizedBox(width: 8),
-                    Text('Download Invoice'),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'cancel',
-                child: Row(
-                  children: [
-                    Icon(Icons.cancel_outlined),
-                    SizedBox(width: 8),
-                    Text('Cancel Order'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             // Order Status Card
-            Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: MEColors.success.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: MEColors.success.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.check_circle_outline,
-                      color: MEColors.success,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Order Delivered',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          'June 15, 2024 at 2:30 PM',
-                          style: TextStyle(
-                            color: MEColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Track Order'),
-                  ),
-                ],
-              ),
-            ),
-
-            // Order Items
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: MEColors.cardBackground,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Order Items',
-                    style: METextStyles.h3,
-                  ),
-                  const SizedBox(height: 16),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 2,
-                    separatorBuilder: (context, index) => const Divider(height: 32),
-                    itemBuilder: (context, index) => _buildOrderItem(),
-                  ),
-                ],
-              ),
-            ),
-
-            // Shipping Details
-            Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: MEColors.cardBackground,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Shipping Details',
-                        style: METextStyles.h3,
-                      ),
-                      TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.edit_outlined, size: 16),
-                        label: const Text('Edit'),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInfoRow(
-                    'Name',
-                    'John Doe',
-                    Icons.person_outline,
-                  ),
-                  _buildInfoRow(
-                    'Phone',
-                    '+1 234 567 890',
-                    Icons.phone_outlined,
-                  ),
-                  _buildInfoRow(
-                    'Email',
-                    'john.doe@example.com',
-                    Icons.email_outlined,
-                  ),
-                  _buildInfoRow(
-                    'Address',
-                    '123 Main Street, Apt 4B\nNew York, NY 10001',
-                    Icons.location_on_outlined,
-                  ),
-                ],
-              ),
-            ),
-
-            // Payment Details
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: MEColors.cardBackground,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Payment Details',
-                    style: METextStyles.h3,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildPaymentMethod(),
-                  const Divider(height: 32),
-                  _buildPaymentRow('Subtotal', '\$199.98'),
-                  const SizedBox(height: 8),
-                  _buildPaymentRow('Shipping', '\$10.00'),
-                  const SizedBox(height: 8),
-                  _buildPaymentRow('Tax', '\$20.00'),
-                  const Divider(height: 24),
-                  _buildPaymentRow(
-                    'Total',
-                    '\$229.98',
-                    isTotal: true,
-                  ),
-                ],
-              ),
-            ),
+            _buildStatusCard(),
             const SizedBox(height: 16),
+            
+            // Order Items
+            _buildOrderItems(),
+            const SizedBox(height: 16),
+            
+            // Shipping Details
+            _buildShippingDetails(),
+            const SizedBox(height: 16),
+            
+            // Payment Details
+            _buildPaymentDetails(),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildOrderItems() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: MEColors.cardBackground,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Order Items',
+            style: METextStyles.h3,
+          ),
+          const SizedBox(height: 16),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 3, // Example count
+            separatorBuilder: (_, __) => const Divider(height: 24),
+            itemBuilder: (context, index) {
+              return _buildOrderItem();
+            },
+          ),
+        ],
       ),
     );
   }
@@ -224,72 +72,55 @@ class OrderDetailsScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Product Image
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-            'https://picsum.photos/200',
+          child: const MENetworkImage(
+            imageUrl: 'https://example.com/image.jpg', // Replace with actual URL
             width: 80,
             height: 80,
             fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 12),
+        
+        // Product Details
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Product Name',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    '\$99.99',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+              const Text(
+                'Product Name',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Size: M | Color: Blue',
+                'Size: M • Color: Black',
                 style: TextStyle(
                   color: MEColors.textSecondary,
-                  fontSize: 12,
+                  fontSize: 14,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: MEColors.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      'Qty: 1',
-                      style: TextStyle(
-                        color: MEColors.primary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  Text(
+                    '\$99.99',
+                    style: TextStyle(
+                      color: MEColors.primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('Write Review'),
+                  Text(
+                    'Qty: 1',
+                    style: TextStyle(
+                      color: MEColors.textSecondary,
+                    ),
                   ),
                 ],
               ),
@@ -300,40 +131,43 @@ class OrderDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(String label, String value, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+  Widget _buildStatusCard() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: MEColors.success.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: MEColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              color: MEColors.success.withOpacity(0.2),
+              shape: BoxShape.circle,
             ),
-            child: Icon(
-              icon,
-              color: MEColors.primary,
-              size: 20,
+            child: const Icon(
+              Icons.check_circle_outline,
+              color: MEColors.success,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  label,
-                  style: TextStyle(
-                    color: MEColors.textSecondary,
-                    fontSize: 12,
+                  'Order Delivered',
+                  style: METextStyles.bodyLarge.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  value,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
+                  'June 15, 2024 at 2:30 PM',
+                  style: TextStyle(
+                    color: MEColors.textSecondary,
                   ),
                 ),
               ],
@@ -341,6 +175,99 @@ class OrderDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildShippingDetails() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: MEColors.cardBackground,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Shipping Details',
+            style: METextStyles.h3,
+          ),
+          const SizedBox(height: 16),
+          _buildDetailRow(
+            Icons.person_outline,
+            'John Doe',
+            '+1 234 567 890',
+          ),
+          const SizedBox(height: 12),
+          _buildDetailRow(
+            Icons.location_on_outlined,
+            '123 Main Street, Apt 4B',
+            'New York, NY 10001',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentDetails() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: MEColors.cardBackground,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Payment Details',
+            style: METextStyles.h3,
+          ),
+          const SizedBox(height: 16),
+          _buildPaymentMethod(),
+          const Divider(height: 32),
+          _buildPaymentRow('Subtotal', '\$299.97'),
+          const SizedBox(height: 8),
+          _buildPaymentRow('Shipping', '\$10.00'),
+          const SizedBox(height: 8),
+          _buildPaymentRow('Tax', '\$29.99'),
+          const Divider(height: 24),
+          _buildPaymentRow('Total', '\$339.96', isTotal: true),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(IconData icon, String title, String subtitle) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: MEColors.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(
+            icon,
+            color: MEColors.primary,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  color: MEColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
