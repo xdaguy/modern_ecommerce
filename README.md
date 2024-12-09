@@ -6,6 +6,8 @@ A comprehensive Flutter E-commerce UI Kit showcasing modern design patterns and 
 FlutterFusion provides a collection of beautifully designed screens and components commonly used in e-commerce applications. Perfect for kickstarting your e-commerce app development or learning modern Flutter UI implementation.
 
 ## Project Structure
+
+```
 lib/
 ├── modern_ecommerce/
 │ ├── app.dart # App entry point and configuration
@@ -28,6 +30,7 @@ lib/
 │ ├── utils/ # Utility functions
 │ └── widgets/ # Reusable UI components
 └── main.dart # Application entry point
+```
 
 ## UI Components & Screens
 
