@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 
+/// Theme configuration for the application.
+/// Sets up MaterialTheme with custom colors and styles.
 class AppTheme {
   static final ThemeData light = ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: MEColors.primary),

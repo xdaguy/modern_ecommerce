@@ -11,6 +11,8 @@ import 'package:modern_ecommerce/modern_ecommerce/screens/flash_sale/flash_sale_
 import 'package:modern_ecommerce/modern_ecommerce/models/category.dart';
 import 'package:modern_ecommerce/modern_ecommerce/constants/dummy_data.dart';
 
+/// Application routing configuration.
+/// Defines all available routes and their builders.
 class AppRoutes {
   static final Map<String, WidgetBuilder> routes = {
     '/': (context) => const SplashScreen(),

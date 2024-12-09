@@ -1,5 +1,5 @@
-/// Product Model
-/// Contains all the information about a product
+/// Product model representing items in the store.
+/// Contains all product-related information and attributes.
 class Product {
   final String id;
   final String name;

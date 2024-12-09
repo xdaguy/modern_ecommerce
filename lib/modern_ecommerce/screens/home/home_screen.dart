@@ -1,3 +1,6 @@
+/// Main home screen of the application.
+/// Displays featured products, categories, and promotions.
+
 import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/constants/dummy_data.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';

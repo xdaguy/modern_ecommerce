@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 
-/// Modern Ecommerce Text Styles
-/// Contains all the text styles used in the Modern Ecommerce UI Kit
+/// Typography styles used throughout the application.
+/// Ensures consistent text appearance across all screens.
 class METextStyles {
   // Headings
   static const TextStyle h1 = TextStyle(

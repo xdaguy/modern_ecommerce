@@ -1,3 +1,5 @@
+# Flutter project configuration
+# Defines dependencies and assets used in the app
 name: modern_ecommerce
 description: "A new modern ecommerce project."
 # The following line prevents the package from being accidentally published to

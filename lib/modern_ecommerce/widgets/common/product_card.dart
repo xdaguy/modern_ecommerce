@@ -3,6 +3,8 @@ import 'package:modern_ecommerce/modern_ecommerce/models/product.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 
+/// Reusable product card widget.
+/// Used to display product information in various layouts.
 class ProductCard extends StatelessWidget {
   final Product product;
   final bool isHorizontal;

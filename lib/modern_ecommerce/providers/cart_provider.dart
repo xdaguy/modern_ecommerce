@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:modern_ecommerce/modern_ecommerce/models/product.dart';
 import 'package:modern_ecommerce/modern_ecommerce/constants/dummy_data.dart';
 
+/// Shopping cart state management.
+/// Handles adding, removing, and updating cart items.
 class CartItem {
   final Product product;
   int quantity;

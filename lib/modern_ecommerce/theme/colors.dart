@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Modern Ecommerce Color Constants
-/// Contains all the colors used in the Modern Ecommerce UI Kit
+/// Color constants used throughout the application.
+/// Defines a consistent color palette for the UI.
 class MEColors {
   // Primary Colors
   static const Color primary = Color(0xFF5B61F4);

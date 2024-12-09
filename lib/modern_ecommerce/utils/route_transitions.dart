@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Custom route transition animations.
+/// Provides smooth navigation transitions between screens.
 class SlidePageRoute<T> extends PageRouteBuilder<T> {
   final Widget page;
   

@@ -42,4 +42,6 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+    <!-- Android platform configuration -->
+    <!-- Defines app permissions and capabilities -->
 </manifest>
