@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:modern_ecommerce/modern_ecommerce/config/theme.dart';
 import 'package:modern_ecommerce/modern_ecommerce/config/routes.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/providers.dart';
-import 'package:modern_ecommerce/modern_ecommerce/screens/main_layout.dart';
 
 class ModernEcommerceApp extends StatelessWidget {
   const ModernEcommerceApp({super.key});
@@ -17,7 +16,7 @@ class ModernEcommerceApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         routes: AppRoutes.routes,
-        home: const MainLayout(),
+        initialRoute: '/',
       ),
     );
   }
