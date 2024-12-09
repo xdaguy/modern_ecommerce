@@ -28,6 +28,7 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _selectedImageIndex = 0;
   int _quantity = 1;
+  bool _isDescriptionExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -259,19 +260,145 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Description',
-            style: METextStyles.h3,
+          // Title and Expand/Collapse button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Description',
+                style: METextStyles.h3,
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _isDescriptionExpanded = !_isDescriptionExpanded;
+                  });
+                },
+                icon: Icon(
+                  _isDescriptionExpanded 
+                      ? Icons.keyboard_arrow_up 
+                      : Icons.keyboard_arrow_down,
+                  color: MEColors.textSecondary,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            widget.product.description,
-            style: METextStyles.bodyMedium.copyWith(
-              color: MEColors.textSecondary,
+          
+          // Description Text
+          AnimatedCrossFade(
+            firstChild: Text(
+              widget.product.description,
+              style: METextStyles.bodyMedium.copyWith(
+                color: MEColors.textSecondary,
+                height: 1.5,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
+            secondChild: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.product.description,
+                  style: METextStyles.bodyMedium.copyWith(
+                    color: MEColors.textSecondary,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // Key Features
+                const Text(
+                  'Key Features',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ...List.generate(
+                  4,
+                  (index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            color: MEColors.primary,
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Feature ${index + 1}: Lorem ipsum dolor sit amet',
+                            style: METextStyles.bodyMedium.copyWith(
+                              color: MEColors.textSecondary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                
+                // Specifications
+                const SizedBox(height: 16),
+                const Text(
+                  'Specifications',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Table(
+                  columnWidths: const {
+                    0: FlexColumnWidth(1.2),
+                    1: FlexColumnWidth(2),
+                  },
+                  children: [
+                    _buildSpecRow('Brand', 'Premium Brand'),
+                    _buildSpecRow('Model', 'Latest 2024'),
+                    _buildSpecRow('Color', 'Multiple Options'),
+                    _buildSpecRow('Warranty', '1 Year'),
+                  ],
+                ),
+              ],
+            ),
+            crossFadeState: _isDescriptionExpanded 
+                ? CrossFadeState.showSecond 
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 300),
           ),
         ],
       ),
+    );
+  }
+
+  TableRow _buildSpecRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: MEColors.textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            value,
+            style: METextStyles.bodyMedium,
+          ),
+        ),
+      ],
     );
   }
 
