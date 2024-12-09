@@ -11,6 +11,7 @@ import 'package:modern_ecommerce/modern_ecommerce/widgets/common/shimmer_loading
 import 'package:modern_ecommerce/modern_ecommerce/screens/product/product_detail_screen.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/wishlist_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/home/banner_slider.dart';
 
 /// Home Screen of the Modern Ecommerce UI Kit
 /// This is the main screen that users see when they open the app
@@ -179,7 +180,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSpecialOfferBanner(),
+          BannerSlider(
+            banners: dummyBanners,
+            height: 180,
+          ),
           _buildCategoriesSection(),
           _buildFeaturedProductsSection(),
           _buildNewArrivalsSection(),

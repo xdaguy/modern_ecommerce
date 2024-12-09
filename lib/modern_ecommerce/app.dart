@@ -16,6 +16,7 @@ class ModernEcommerceApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         routes: AppRoutes.routes,
+        onGenerateRoute: AppRoutes.onGenerateRoute,
         initialRoute: '/',
       ),
     );

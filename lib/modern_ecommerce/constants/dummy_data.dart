@@ -1,6 +1,7 @@
 import 'package:modern_ecommerce/modern_ecommerce/models/category.dart';
 import 'package:modern_ecommerce/modern_ecommerce/models/product.dart';
 import 'package:modern_ecommerce/modern_ecommerce/constants/svg_icons.dart';
+import 'package:modern_ecommerce/modern_ecommerce/models/banner.dart';
 
 /// Dummy Categories
 final List<Category> dummyCategories = [
@@ -81,5 +82,35 @@ final List<Product> dummyProducts = [
     rating: 4.9,
     reviews: 445,
     category: 'Beauty',
+  ),
+];
+
+/// Dummy Banners
+final List<PromoBanner> dummyBanners = [
+  PromoBanner(
+    id: '1',
+    imageUrl: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    title: 'Summer Sale',
+    subtitle: 'Up to 50% off on selected items',
+    actionText: 'Shop Now',
+    actionRoute: '/category',
+    actionParams: {'category': 'summer-sale'},
+  ),
+  PromoBanner(
+    id: '2',
+    imageUrl: 'https://images.pexels.com/photos/5872361/pexels-photo-5872361.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    title: 'New Arrivals',
+    subtitle: 'Check out our latest collection',
+    actionText: 'Explore',
+    actionRoute: '/category',
+    actionParams: {'category': 'new-arrivals'},
+  ),
+  PromoBanner(
+    id: '3',
+    imageUrl: 'https://images.pexels.com/photos/5650026/pexels-photo-5650026.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    title: 'Flash Sale',
+    subtitle: '24 hours only - Don\'t miss out!',
+    actionText: 'View Deals',
+    actionRoute: '/flash-sale',
   ),
 ]; 
