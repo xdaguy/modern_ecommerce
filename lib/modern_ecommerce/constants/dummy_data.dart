@@ -4,7 +4,7 @@ import 'package:modern_ecommerce/modern_ecommerce/constants/svg_icons.dart';
 import 'package:modern_ecommerce/modern_ecommerce/models/banner.dart';
 
 /// Dummy Categories
-final List<Category> dummyCategories = [
+const List<Category> dummyCategories = [
   Category(
     id: '1',
     name: 'Electronics',
@@ -50,7 +50,7 @@ final List<Category> dummyCategories = [
 ];
 
 /// Dummy Products
-final List<Product> dummyProducts = [
+const List<Product> dummyProducts = [
   // Electronics
   Product(
     id: '1',
@@ -59,7 +59,7 @@ final List<Product> dummyProducts = [
     price: 349.99,
     imageUrl: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400',
     rating: 4.8,
-    reviews: 1256,
+    reviews: 1234,
     category: 'Electronics',
   ),
   Product(
@@ -203,10 +203,10 @@ final List<Product> dummyProducts = [
 ];
 
 /// Dummy Banners
-final List<PromoBanner> dummyBanners = [
+const List<PromoBanner> dummyBanners = [
   PromoBanner(
     id: '1',
-    imageUrl: 'https://images.pexels.com/photos/6214476/pexels-photo-6214476.jpeg?auto=compress&cs=tinysrgb&w=800',
+    imageUrl: 'https://images.pexels.com/photos/5872361/pexels-photo-5872361.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     title: 'Summer Sale',
     subtitle: 'Up to 50% off on selected items',
     actionText: 'Shop Now',
@@ -215,16 +215,16 @@ final List<PromoBanner> dummyBanners = [
   ),
   PromoBanner(
     id: '2',
-    imageUrl: 'https://images.pexels.com/photos/5624966/pexels-photo-5624966.jpeg?auto=compress&cs=tinysrgb&w=800',
-    title: 'New Arrivals',
-    subtitle: 'Check out our latest collection',
+    imageUrl: 'https://images.pexels.com/photos/6347546/pexels-photo-6347546.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    title: 'New Collection',
+    subtitle: 'Discover the latest trends',
     actionText: 'Explore',
     actionRoute: '/category',
     actionParams: {'category': 'new-arrivals'},
   ),
   PromoBanner(
     id: '3',
-    imageUrl: 'https://images.pexels.com/photos/5632398/pexels-photo-5632398.jpeg?auto=compress&cs=tinysrgb&w=800',
+    imageUrl: 'https://images.pexels.com/photos/5650026/pexels-photo-5650026.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     title: 'Flash Sale',
     subtitle: '24 hours only - Don\'t miss out!',
     actionText: 'View Deals',

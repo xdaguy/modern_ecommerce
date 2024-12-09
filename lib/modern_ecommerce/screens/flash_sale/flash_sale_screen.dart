@@ -56,8 +56,9 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
         slivers: [
           // App Bar with Timer
           SliverAppBar(
-            pinned: true,
             expandedHeight: 120,
+            pinned: true,
+            backgroundColor: MEColors.primary,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
@@ -66,7 +67,7 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
                     end: Alignment.bottomRight,
                     colors: [
                       MEColors.primary,
-                      const Color(0xFF8086FF),
+                      MEColors.primary.withOpacity(0.8),
                     ],
                   ),
                 ),
@@ -83,8 +84,9 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
                         'Ends in: ',
@@ -108,83 +110,185 @@ class _FlashSaleScreenState extends State<FlashSaleScreen> {
                   ),
                 ],
               ),
+              centerTitle: true,
             ),
           ),
 
-          // Content
+          // Products Grid with improved layout
           SliverPadding(
             padding: const EdgeInsets.all(16),
             sliver: SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.75,
-                crossAxisSpacing: 16,
+                childAspectRatio: 0.65, // Adjusted for better card proportions
                 mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final product = dummyProducts[index];
-                  final discountedPrice = product.price * 0.5; // 50% off
-
-                  return Stack(
-                    children: [
-                      ProductCard(
-                        product: product,
-                        isInWishlist: context.watch<WishlistProvider>().isInWishlist(product.id),
-                        onFavoritePressed: () {
-                          context.read<WishlistProvider>().toggleWishlist(product);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                context.read<WishlistProvider>().isInWishlist(product.id)
-                                    ? 'Added to wishlist'
-                                    : 'Removed from wishlist',
-                              ),
-                              duration: const Duration(seconds: 1),
-                            ),
-                          );
-                        },
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailScreen(
-                                product: product,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      Positioned(
-                        top: 8,
-                        left: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetailScreen(
+                            product: product,
                           ),
-                          decoration: BoxDecoration(
-                            color: MEColors.error,
-                            borderRadius: BorderRadius.circular(4),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: MEColors.cardBackground,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Product Image
+                              ClipRRect(
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(12),
+                                ),
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Image.network(
+                                    product.imageUrl,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              
+                              // Product Details
+                              Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.name,
+                                      style: METextStyles.bodyMedium.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    
+                                    // Price Row
+                                    Row(
+                                      children: [
+                                        // Original Price (Strikethrough)
+                                        Text(
+                                          '\$${product.price.toStringAsFixed(2)}',
+                                          style: TextStyle(
+                                            color: MEColors.textSecondary,
+                                            decoration: TextDecoration.lineThrough,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        // Sale Price
+                                        Text(
+                                          '\$${(product.price * 0.5).toStringAsFixed(2)}',
+                                          style: TextStyle(
+                                            color: MEColors.error,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    
+                                    const SizedBox(height: 8),
+                                    // Rating and Reviews
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.star,
+                                          size: 16,
+                                          color: Colors.amber,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          product.rating.toString(),
+                                          style: METextStyles.bodySmall,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '(${product.reviews})',
+                                          style: METextStyles.bodySmall,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                          child: const Text(
-                            '50% OFF',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          
+                          // Discount Badge
+                          Positioned(
+                            top: 12,
+                            left: 12,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: MEColors.error,
+                                borderRadius: BorderRadius.circular(4),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: const Text(
+                                '50% OFF',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          
+                          // Wishlist Button
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: IconButton(
+                              icon: Icon(
+                                context.watch<WishlistProvider>().isInWishlist(product.id)
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: context.watch<WishlistProvider>().isInWishlist(product.id)
+                                    ? MEColors.error
+                                    : Colors.grey,
+                              ),
+                              onPressed: () {
+                                context.read<WishlistProvider>().toggleWishlist(product);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   );
                 },
                 childCount: dummyProducts.length,
