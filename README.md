@@ -7,22 +7,30 @@ FlutterFusion provides a collection of beautifully designed screens and componen
 
 ## Project Structure
 
+```
 lib/
-├── modern_ecommerce/           # Main app module
-│ ├── app.dart                 # App entry point and configuration
-│ ├── config/                  # App-wide configurations
-│ │ ├── routes.dart           # Route definitions
-│ │ └── theme.dart            # Theme configuration
-│ ├── constants/              # App-wide constants
-│ │ ├── dummy_data.dart      # Mock data for UI demonstration
-│ │ └── svg_icons.dart       # SVG icon definitions
-│ ├── models/                 # UI data models
-│ ├── providers/             # UI state management
-│ ├── screens/               # UI screens
-│ ├── theme/                 # Theme definitions
-│ ├── utils/                 # Utility functions
-│ └── widgets/               # Reusable UI components
-└── main.dart                # Application entry point
+├── modern_ecommerce/
+│ ├── app.dart # App entry point and configuration
+│ ├── config/ # App-wide configurations
+│ │ ├── routes.dart # Route definitions
+│ │ └── theme.dart # Theme configuration
+│ ├── constants/ # App-wide constants
+│ │ ├── dummy_data.dart # Mock data for UI demonstration
+│ │ └── svg_icons.dart # SVG icon definitions
+│ ├── models/ # UI data models
+│ ├── providers/ # UI state management
+│ ├── screens/ # UI screens
+│ │ ├── auth/ # Authentication screens
+│ │ ├── cart/ # Shopping cart screens
+│ │ ├── home/ # Home and product screens
+│ │ └── profile/ # User profile screens
+│ ├── theme/ # Theme definitions
+│ │ ├── colors.dart # Color system
+│ │ └── text_styles.dart # Typography system
+│ ├── utils/ # Utility functions
+│ └── widgets/ # Reusable UI components
+└── main.dart # Application entry point
+```
 
 ## UI Components & Screens
 
