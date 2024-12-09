@@ -459,45 +459,151 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16),
-          child: Text('New Arrivals', style: METextStyles.h2),
+        // Header
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'New Arrivals',
+                style: METextStyles.h2,
+              ),
+              TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  foregroundColor: MEColors.primary,
+                ),
+                child: const Text('See All'),
+              ),
+            ],
+          ),
         ),
+
+        // Products List - Vertical Layout
         ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: 3,
+          itemCount: 3, // Show only 3 items
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: ProductCard(
-                product: dummyProducts[index],
-                isInWishlist: context.watch<WishlistProvider>().isInWishlist(dummyProducts[index].id),
-                onFavoritePressed: () {
-                  context.read<WishlistProvider>().toggleWishlist(dummyProducts[index]);
-                  // Optional: Show feedback
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        context.read<WishlistProvider>().isInWishlist(dummyProducts[index].id)
-                            ? 'Added to wishlist'
-                            : 'Removed from wishlist',
-                      ),
-                      duration: const Duration(seconds: 1),
-                    ),
-                  );
-                },
+            final product = dummyProducts[index];
+            return Container(
+              height: 140,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProductDetailScreen(
-                        product: dummyProducts[index],
+                        product: product,
                       ),
                     ),
                   );
                 },
+                borderRadius: BorderRadius.circular(12),
+                child: Row(
+                  children: [
+                    // Product Image
+                    Container(
+                      width: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.horizontal(
+                          left: Radius.circular(12),
+                        ),
+                        image: DecorationImage(
+                          image: NetworkImage(product.imageUrl),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    
+                    // Product Details
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // New Tag
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: MEColors.primary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(
+                                'NEW',
+                                style: TextStyle(
+                                  color: MEColors.primary,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            
+                            // Product Name
+                            Text(
+                              product.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            
+                            // Price
+                            Text(
+                              '\$${product.price.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                color: MEColors.primary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    
+                    // Favorite Button
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: IconButton(
+                        onPressed: () {
+                          context.read<WishlistProvider>().toggleWishlist(product);
+                        },
+                        icon: Icon(
+                          context.watch<WishlistProvider>().isInWishlist(product.id)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: context.watch<WishlistProvider>().isInWishlist(product.id)
+                              ? MEColors.error  // Use error color (usually red) when favorited
+                              : Colors.grey,   // Use grey when not favorited
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

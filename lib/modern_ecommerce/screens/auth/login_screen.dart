@@ -5,6 +5,7 @@ import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/auth/signup_screen.dart';
 import 'package:modern_ecommerce/modern_ecommerce/screens/main_layout.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/custom_text_field.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/auth/success_popup.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -221,11 +222,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin() {
     if (_formKey.currentState!.validate()) {
-      // Implement login logic here
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const MainLayout(),
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const SuccessPopup(
+          title: 'Welcome Back!',
+          message: 'You have successfully logged in',
+          buttonText: 'Continue Shopping',
         ),
       );
     }

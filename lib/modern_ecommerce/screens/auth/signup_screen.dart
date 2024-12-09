@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/custom_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:modern_ecommerce/modern_ecommerce/widgets/auth/success_popup.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -218,7 +219,16 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void _handleSignup() {
-    // Implement signup logic here
-    Navigator.pushReplacementNamed(context, '/main');
+    if (_formKey.currentState!.validate()) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const SuccessPopup(
+          title: 'Welcome to FlutterFusion!',
+          message: 'Your account has been created',
+          buttonText: 'Start Shopping',
+        ),
+      );
+    }
   }
 } 
