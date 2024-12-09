@@ -4,7 +4,7 @@ import 'package:modern_ecommerce/modern_ecommerce/config/theme.dart';
 import 'package:modern_ecommerce/modern_ecommerce/config/routes.dart';
 import 'package:modern_ecommerce/modern_ecommerce/providers/providers.dart';
 
-/// Root widget of the FlutterFusion application.
+/// Root widget of the FlutterFusion Modern Ecommerce application.
 /// Sets up providers, theme, and routing configuration.
 class ModernEcommerceApp extends StatelessWidget {
   const ModernEcommerceApp({super.key});

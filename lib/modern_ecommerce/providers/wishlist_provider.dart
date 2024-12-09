@@ -12,6 +12,12 @@ class WishlistProvider extends ChangeNotifier {
   
   List<Product> get items => _items;
   
+  // Add total value getter
+  double get totalValue => _items.fold(
+    0, 
+    (sum, product) => sum + product.price,
+  );
+  
   bool isInWishlist(String productId) {
     return _items.any((item) => item.id == productId);
   }
@@ -23,6 +29,12 @@ class WishlistProvider extends ChangeNotifier {
     } else {
       _items.add(product);
     }
+    notifyListeners();
+  }
+
+  // Add clear wishlist method
+  void clearWishlist() {
+    _items.clear();
     notifyListeners();
   }
 } 
