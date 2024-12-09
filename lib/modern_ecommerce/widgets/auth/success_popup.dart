@@ -5,12 +5,14 @@ class SuccessPopup extends StatefulWidget {
   final String title;
   final String message;
   final String buttonText;
+  final VoidCallback? onPressed;
 
   const SuccessPopup({
     super.key,
     required this.title,
     required this.message,
     required this.buttonText,
+    this.onPressed,
   });
 
   @override
@@ -194,10 +196,12 @@ class _SuccessPopupState extends State<SuccessPopup> with SingleTickerProviderSt
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Add button press animation
                       _controller.reverse().then((_) {
-                        Navigator.of(context).pop();
-                        Navigator.pushReplacementNamed(context, '/main');
+                        if (widget.onPressed != null) {
+                          widget.onPressed!();
+                        } else {
+                          Navigator.of(context).pop();
+                        }
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -224,4 +228,4 @@ class _SuccessPopupState extends State<SuccessPopup> with SingleTickerProviderSt
       ),
     );
   }
-} 
+}

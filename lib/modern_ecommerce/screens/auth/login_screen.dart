@@ -150,21 +150,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     _buildSocialButton(
                       'google',
                       'Google',
-                      () {
+                          () {
                         // Handle Google login
                       },
                     ),
                     _buildSocialButton(
                       'apple',
                       'Apple',
-                      () {
+                          () {
                         // Handle Apple login
                       },
                     ),
                     _buildSocialButton(
                       'facebook',
                       'Facebook',
-                      () {
+                          () {
                         // Handle Facebook login
                       },
                     ),
@@ -225,10 +225,19 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => const SuccessPopup(
+        builder: (dialogContext) => SuccessPopup(
           title: 'Welcome Back!',
           message: 'You have successfully logged in',
           buttonText: 'Continue Shopping',
+          onPressed: () {
+            Navigator.pop(dialogContext);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainLayout(),
+              ),
+            );
+          },
         ),
       );
     }
