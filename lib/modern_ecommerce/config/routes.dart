@@ -10,6 +10,7 @@ import 'package:modern_ecommerce/modern_ecommerce/screens/categories/category_de
 import 'package:modern_ecommerce/modern_ecommerce/screens/flash_sale/flash_sale_screen.dart';
 import 'package:modern_ecommerce/modern_ecommerce/models/category.dart';
 import 'package:modern_ecommerce/modern_ecommerce/constants/dummy_data.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/auth/forgot_password_screen.dart';
 
 /// Application routing configuration.
 /// Defines all available routes and their builders.
@@ -23,6 +24,7 @@ class AppRoutes {
     '/add-payment': (context) => const AddPaymentScreen(),
     '/my-orders': (context) => const MyOrdersScreen(),
     '/flash-sale': (context) => const FlashSaleScreen(),
+    '/forgot-password': (context) => const ForgotPasswordScreen(),
   };
 
   // Handle dynamic routes with parameters

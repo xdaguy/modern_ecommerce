@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/colors.dart';
 import 'package:modern_ecommerce/modern_ecommerce/theme/text_styles.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/network_image.dart';
+import 'package:modern_ecommerce/modern_ecommerce/models/order.dart';
+import 'package:modern_ecommerce/modern_ecommerce/models/product.dart';
+import 'package:modern_ecommerce/modern_ecommerce/constants/dummy_data.dart';
 import 'package:share_plus/share_plus.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
@@ -43,6 +46,26 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildOrderItems() {
+    // Example order items using dummy data
+    final orderItems = [
+      OrderItem(
+        id: '1',
+        product: dummyProducts[0],
+        quantity: 2,
+        price: dummyProducts[0].price,
+        size: 'M',
+        color: 'Black',
+      ),
+      OrderItem(
+        id: '2',
+        product: dummyProducts[1],
+        quantity: 1,
+        price: dummyProducts[1].price,
+        size: 'L',
+        color: 'Blue',
+      ),
+    ];
+
     return Container(
       padding: const EdgeInsets.all(16),
       color: MEColors.cardBackground,
@@ -57,10 +80,10 @@ class OrderDetailsScreen extends StatelessWidget {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: 3, // Example count
+            itemCount: orderItems.length,
             separatorBuilder: (_, __) => const Divider(height: 24),
             itemBuilder: (context, index) {
-              return _buildOrderItem();
+              return _buildOrderItem(orderItems[index]);
             },
           ),
         ],
@@ -68,15 +91,15 @@ class OrderDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderItem() {
+  Widget _buildOrderItem(OrderItem item) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Product Image
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: const MENetworkImage(
-            imageUrl: 'https://example.com/image.jpg', // Replace with actual URL
+          child: MENetworkImage(
+            imageUrl: item.product.imageUrl,
             width: 80,
             height: 80,
             fit: BoxFit.cover,
@@ -89,16 +112,16 @@ class OrderDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Product Name',
-                style: TextStyle(
+              Text(
+                item.product.name,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Size: M • Color: Black',
+                'Size: ${item.size} • Color: ${item.color}',
                 style: TextStyle(
                   color: MEColors.textSecondary,
                   fontSize: 14,
@@ -109,7 +132,7 @@ class OrderDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '\$99.99',
+                    '\$${item.price.toStringAsFixed(2)}',
                     style: TextStyle(
                       color: MEColors.primary,
                       fontWeight: FontWeight.bold,
@@ -117,7 +140,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Qty: 1',
+                    'Qty: ${item.quantity}',
                     style: TextStyle(
                       color: MEColors.textSecondary,
                     ),

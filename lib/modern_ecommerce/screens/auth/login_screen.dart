@@ -6,6 +6,7 @@ import 'package:modern_ecommerce/modern_ecommerce/screens/auth/signup_screen.dar
 import 'package:modern_ecommerce/modern_ecommerce/screens/main_layout.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/common/custom_text_field.dart';
 import 'package:modern_ecommerce/modern_ecommerce/widgets/auth/success_popup.dart';
+import 'package:modern_ecommerce/modern_ecommerce/screens/auth/forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -106,7 +107,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Spacer(),
                     TextButton(
                       onPressed: () {
-                        // Navigate to forgot password
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordScreen(),
+                          ),
+                        );
                       },
                       child: const Text('Forgot Password?'),
                     ),
